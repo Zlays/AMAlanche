@@ -40,6 +40,10 @@ yarn-debug.log*
 yarn-error.log*
 ######
 
+# Deploy
+deploy/postgres-data
+######
+
 # IDEs and editors
 .idea/
 .project

@@ -1,29 +1,24 @@
 import React from 'react';
 import './App.css';
-import {Button, ChakraProvider, Stack} from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Homepage from './containers/Homepage';
+import TestPage from './containers/TestPage';
+import Login from './containers/Login';
 
 function App() {
-    return (
-        <ChakraProvider>
-            <div className="App">
-                <h1>AMAlanche</h1>
-                <Stack direction='row' spacing={4} align='center'>
-                    <Button colorScheme='teal' variant='solid'>
-                        Button
-                    </Button>
-                    <Button colorScheme='teal' variant='outline'>
-                        Button
-                    </Button>
-                    <Button colorScheme='teal' variant='ghost'>
-                        Button
-                    </Button>
-                    <Button colorScheme='teal' variant='link'>
-                        Button
-                    </Button>
-                </Stack>
-            </div>
-        </ChakraProvider>
-    );
+	return (
+		<ChakraProvider>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/test" element={<TestPage />} />
+					<Route path="*" element={<Homepage />} />
+				</Routes>
+			</BrowserRouter>
+		</ChakraProvider>
+	);
 }
 
 export default App;
