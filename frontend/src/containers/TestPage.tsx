@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { SocketProvider } from '../utils/SocketProvider';
 
 function TestPage() {
 	return (
 		<>
-			<h1>Test Page</h1>
+			<SocketProvider>
+				<h1>Test Page</h1>
+			</SocketProvider>
 		</>
 	);
 }

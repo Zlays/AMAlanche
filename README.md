@@ -3,7 +3,7 @@
 ## TODO
 - Main Features (high priority)
 
-  - [x] Initialize Frontend (React)
+  - [x] Initialize Frontend (React).
   - [ ] Pick a CSS library (TailwindCSS) (and) framework (DaisyUI, ChakraUI, ...).
   - [x] Initialize Backend (Golang, Gin).
   - [ ] Initialize Backend Connection with DB (ORM?).
