@@ -3,6 +3,8 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/RIP-Comm/AMAlanche/utils/mappers"
+
 	"github.com/RIP-Comm/AMAlanche/models/entity"
 	"github.com/RIP-Comm/AMAlanche/utils/role"
 	"golang.org/x/crypto/bcrypt"
@@ -32,15 +34,15 @@ type UserController struct{}
 // @Router /user/{id} [get]
 func (uc *UserController) getUserById() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idStr := c.Param("id")
+		userisdStr := c.Param("userId")
 
-		id, err := utils.StrToUint(idStr)
-		if idStr == "" || err != nil {
-			c.JSON(http.StatusBadRequest, dto.ErrorResponse{Error: ex.IdNotFoundMessage})
+		userId, err := utils.StrToUint(userisdStr)
+		if userisdStr == "" || err != nil {
+			c.JSON(http.StatusBadRequest, dto.ErrorResponse{Error: ex.UserIdNotFoundMessage})
 			return
 		}
 
-		user, customError := services.GetUserById(id)
+		user, customError := services.GetUserById(userId)
 		if customError != &ex.NoError {
 			if customError == &ex.UserNotFound {
 				c.JSON(http.StatusNotFound, customError.Message)
@@ -50,13 +52,11 @@ func (uc *UserController) getUserById() gin.HandlerFunc {
 			return
 		}
 
+		response := mappers.MapUserEntityToUserResponse(user)
 		c.JSON(
 			http.StatusOK,
-			dto.UserResponse{
-				Id:       user.ID,
-				Username: user.Username,
-				Email:    user.Email,
-			})
+			response,
+		)
 	}
 }
 
@@ -101,7 +101,8 @@ func (uc *UserController) createUser() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, user)
+		response := mappers.MapUserEntityToUserResponse(user)
+		c.JSON(http.StatusOK, response)
 	}
 }
 
@@ -120,11 +121,18 @@ func (uc *UserController) createUser() gin.HandlerFunc {
 // @Router /user/{id} [put]
 func (uc *UserController) updateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idStr := c.Param("id")
+		userIdStr := c.Param("userId")
 
-		id, err := utils.StrToUint(idStr)
-		if idStr == "" || err != nil {
-			c.JSON(http.StatusBadRequest, dto.ErrorResponse{Error: ex.IdNotFoundMessage})
+		userId, err := utils.StrToUint(userIdStr)
+		if userIdStr == "" || err != nil {
+			c.JSON(http.StatusBadRequest, dto.ErrorResponse{Error: ex.UserIdNotFoundMessage})
+			return
+		}
+
+		authenticatedUserId := c.MustGet("authenticatedUserId").(uint)
+
+		if authenticatedUserId != userId {
+			c.JSON(http.StatusForbidden, ex.ForbiddenMessage)
 			return
 		}
 
@@ -135,7 +143,7 @@ func (uc *UserController) updateUser() gin.HandlerFunc {
 			return
 		}
 
-		user, customError := services.UpdateUser(id, requestBody, c)
+		user, customError := services.UpdateUser(userId, requestBody)
 		if customError != &ex.NoError {
 			if customError.Code == ex.ConflictCode {
 				c.JSON(http.StatusConflict, customError.Message)
@@ -147,12 +155,10 @@ func (uc *UserController) updateUser() gin.HandlerFunc {
 			return
 		}
 
+		response := mappers.MapUserEntityToUserResponse(user)
 		c.JSON(
 			http.StatusOK,
-			dto.UserResponse{
-				Id:       user.ID,
-				Username: user.Username,
-				Email:    user.Email,
-			})
+			response,
+		)
 	}
 }

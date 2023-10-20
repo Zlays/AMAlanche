@@ -317,6 +317,266 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/{userId}/channel": {
+            "post": {
+                "description": "Create a new channel for a specific user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Create a channel",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the user who owns the channel",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Channel creation data",
+                        "name": "dto.channelCreateRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Channel created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelCreateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden access",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}/channel/all": {
+            "get": {
+                "description": "Retrieve all channels associated with a specific user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Get all channels for a user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the user",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Channels retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelGetAllResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden access",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}/channel/{channelId}": {
+            "get": {
+                "description": "Retrieve a channel by its ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Get channel by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the user",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID of the channel",
+                        "name": "channelId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Channel retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden access",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Channel not found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}/owned": {
+            "get": {
+                "description": "Retrieve all channels owned by a specific user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Get all channels owned by a user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the user",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Owned channels retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelGetAllResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden access",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}/visible": {
+            "get": {
+                "description": "Retrieve all visible channels, you don't own, associated with a specific user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Get all channels visible for a user you don't own",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the user",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Visible channels retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChannelGetAllResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden access",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -388,6 +648,53 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ChannelCreateRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ChannelCreateResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ChannelGetAllResponse": {
+            "type": "object",
+            "properties": {
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ChannelResponse"
+                    }
+                }
+            }
+        },
+        "dto.ChannelResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ownerId": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -440,9 +747,44 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Channel": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ownerId": {
+                    "type": "integer"
+                },
+                "participants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.User"
+                    }
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.User": {
             "type": "object",
             "properties": {
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Channel"
+                    }
+                },
                 "createdAt": {
                     "type": "string"
                 },
